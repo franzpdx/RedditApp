@@ -19,7 +19,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <!--
+            <!-- Planned feature: Buttons for quick selection and deselect of all subreddits. This will be deployed when it's fully functional.
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="SelectAllCheckbox" Margin="2,2,5,2"  Click="AllCheckClick">Select All</Button>
                     <Button x:Name="SelectNoneCheckbox" Margin="5,2,2,2" Click="AllClearClick">Clear Selection</Button>
@@ -57,36 +57,33 @@
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition />   <!-- This is the image display area -->
+                <RowDefinition Height="auto" /> <!-- This is the "Report" window that shows messages and errors -->
+                <RowDefinition Height="auto" /> <!-- This is the bottom row with UI elements like the zoom slider -->
             </Grid.RowDefinitions>
             <ListView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Thumbnails}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="ListboxOfPhotos">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Path=Image}" Height="{Binding ElementName=ZoomSlider, Path=Value}">
+                        <Image Source="{Binding Path=Image}" Height="{Binding ElementName=ZoomSlider, Path=Value}" Margin="1">
                             <Image.Effect>
-                                <DropShadowEffect Direction="225" Color="#FFB6C2CB" ShadowDepth="7" BlurRadius="5" />
+                                <DropShadowEffect Direction="325" Color="#555555" ShadowDepth="7" BlurRadius="3" />
                             </Image.Effect>
                         </Image>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
+                        <WrapPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Height="auto">
-                <!-- 
-                    <Button x:Name="UpdateButton" Margin="3,0,3,0" Click="Update_Click">Update from Selected subreddits</>
-                    -->
                 <Button x:Name="SaveButton" Grid.Row="1" Click="SaveButton_Click" Margin="3,0,3,0">Save These Images</Button>
                 <Button x:Name="ClearButton" Margin="3,0,3,0" Click="ClearButton_Click">Clear Messages</Button>
                 <Button x:Name="DemoButton" HorizontalAlignment="Right" Margin="3,0,3,0" Click="DemoButton_Click">Demo</Button>
                 <ComboBox x:Name="SFWFilterBox" SelectionChanged="FilterBoxChanged" Width="100" Margin="3,0,3,0" SelectedIndex="0">
                     <ComboBoxItem>Safe for Work</ComboBoxItem>
-                    <ComboBoxItem>No filter</ComboBoxItem>
+                    <ComboBoxItem>All Images (No filter)</ComboBoxItem>
                     <ComboBoxItem>Only NSFW</ComboBoxItem>
                 </ComboBox>
                 <ComboBox x:Name="ReportingFilterBox" SelectionChanged="ReportingBoxChanged" Width="100" Margin="3,0,3,0" SelectedIndex="0">
