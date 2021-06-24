@@ -24,11 +24,15 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml.Serialization;
 
-namespace PhotoApp
+// Project:         RedditApp / Reddit Wallpaper Crawler
+// Author:          Thomas Franz
+// Last Update:     June 24, 2021
+
+namespace RedditApp
 {
-    // Class:       RedditImage
-    // Purpose:     Holds an image and metadata associated with that image
-    public class RedditImage
+    // Struct:      RedditImage
+    // Purpose:     Contains an image and metadata associated with that image
+    public struct RedditImage
     {
         public BitmapImage Image { get; set; }
         public string URL { get; set; }
@@ -37,7 +41,7 @@ namespace PhotoApp
     }
 
     // Class:       SubredditImages
-    // Purpose:     Represents a collection of images pulled down form a Subreddit
+    // Purpose:     Represents a collection of images pulled down from a Subreddit
     [Serializable]
     public class SubredditImages
     {
@@ -47,7 +51,11 @@ namespace PhotoApp
         public List<RedditImage> Images { get { return ImageList; } set { ImageList = value; } }
 
         public string SubredditName { get; set; }
-        public string Label
+
+        public bool Selected { get; set; }
+
+        // Label is used in our databinding to display the names of the subreddits along with the image counts
+        public string Label 
         {
             get
             {
@@ -76,8 +84,6 @@ namespace PhotoApp
             set { }
         }
 
-        public bool Selected { get; set; }
-
         // Constructor with SubredditName setter (and empty image List)
         public SubredditImages(string Name)
         {
@@ -86,7 +92,7 @@ namespace PhotoApp
             Selected = true;
         }
 
-        // Constructor with SubredditName setter (and empty image List)
+        // Constructor with SubredditName and Selected setters (and empty image List)
         public SubredditImages(string Name, bool IsSelected)
         {
             SubredditName = Name;
@@ -104,7 +110,7 @@ namespace PhotoApp
     }
 
     // Class:       AppSettings
-    // Purpose:     Used to serialize a collection of user settings
+    // Purpose:     Used to serialize a collection of user settings so we can restore the app to its prior state, when it's opened again
     [Serializable]
     public class AppSettings
     {
@@ -125,7 +131,7 @@ namespace PhotoApp
         public double WindowY { get; set; }
         public double WindowWidth { get; set; }
         public double WindowHeight { get; set; }
-        public WindowState WindowState { get; set; }        // This stores the Fullscreen? setting
+        public WindowState WindowState { get; set; }        // This stores the "Fullscreen" setting
 
     }
 
@@ -147,36 +153,36 @@ namespace PhotoApp
     public partial class MainWindow : Window
     {
         public string SubredditsFile = "SubredditList.dat";
-        public string ImageDirectory = "";
+        public string ImageDirectory = "Saved Images/";
         public string MessageLogFile = "MessageLog.txt";
         const string AppSettingsFile = "AppSettings.dat";
         Random Randomizer = new Random();       // Randomizer used by the "Loading" animation
 
+        // Collections we will be binding to in the UI
         public ObservableCollection<RedditImage> Thumbnails = new ObservableCollection<RedditImage>();
         public ObservableCollection<Messages> MessageList = new ObservableCollection<Messages>();
         public ObservableCollection<SubredditImages> SubredditList = new ObservableCollection<SubredditImages>();
 
+        // These are options the user can select or choose between
         bool VerboseMode = false;
         bool ReportErrors = true;
         bool ShowNSFW = false;
         bool ShowSFW = true;
         bool DownloadOnStartup { get; set; } = true;
         bool WriteMessageFile { get; set; } = true;
+
         StreamWriter MessageFileStream;
 
-
-        int DisplayLimit = 150;     // This imposes a limit on how many images can be displayed in the gallery. For preformance purposes.
+        int DisplayLimit = 150;     // This imposes a limit on how many images can be displayed in the gallery. This cap is for performance.
         bool DisplayLimitReached = false;
 
-        static public int PostCount { get; set; } = 3;
-        //public double ZoomWidth { get; set; } = 200;
+        static public int PostCount { get; set; } = 3;  // The number of images we attempt to find on each subreddit
 
-        bool ControlsDisabled = false;
+        bool ControlsDisabled = false;  // This flag is used to keep track of when we've disabled some of the interactable UI elements, which is done while searching for images
 
-        //const string exampleredditurl = @"https://www.reddit.com/r/EarthPorn/top/.json?limit=20";
         const string RedditURLPrefix = @"https://www.reddit.com/r/";
         const string RedditURLSuffix = @"/.json?raw_json=1&limit=";
-        static string RedditURLModifier = "";      // could be top/ etc
+        static string RedditURLModifier = "";      // Allows modifiers like new or top
 
         // Function:    Constructor
         // Purpose:     Initializes window components, establishes bindings, attempts to load prior saved information
@@ -250,7 +256,7 @@ namespace PhotoApp
             }
 
             // Write the message to file
-            if (WriteMessageFile)
+            if (WriteMessageFile && MessageFileStream != null)
             {
                 try
                 {
@@ -260,8 +266,6 @@ namespace PhotoApp
                     {
                         MessageFileStream.WriteLine(string.Empty.PadRight(30) + ExtraMessage);
                     }
-
-                    //MessageFileStream.Flush();            // This will push the message to the file immediately
                 }
                 catch (Exception ex)                                                    // If we have a problem here
                 {
@@ -528,7 +532,7 @@ namespace PhotoApp
                     if (child.data.post_hint != null)
                         PostHint = child.data.post_hint;
 
-                    // Skip any posts not marked as an image (performance improvement)
+                    // Skip any posts not marked as an image
                     if (PostHint.ToLower() == "image")
                     {
 
@@ -570,7 +574,7 @@ namespace PhotoApp
                                 //    UIDispatcher.Invoke(() => Report("!!", "PostHint: " + PostHint + " | Path: " + FileName));
                                 //}
 
-                                // For "verbose" loading
+                                // If the user has selected Verbose reporting, report the details of each image
                                 if (VerboseMode)
                                 {
                                     UIDispatcher.Invoke(() => Report(SubredditName, "Loaded " + Image.FileName + " [PostHint: " + PostHint + "][Path: " + FileName + "]"));
@@ -587,7 +591,7 @@ namespace PhotoApp
                             }
                         }
                     }
-                    else   // else : here we have a post we are skipping
+                    else   // else : we're here if this post is not marked as an image
                     {
                         if (VerboseMode)
                         {
@@ -604,7 +608,7 @@ namespace PhotoApp
                 UIDispatcher.Invoke(() => Report(source, message));
             }
 
-            return sr;
+            return sr;      // Return our collection of SubredditImages
         }
 
         // Function:    ParseFilename
@@ -682,11 +686,9 @@ namespace PhotoApp
         // Purpose:     When user clicks on the Save button, saves the images displayed in the gallery to disc
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            string FileDirectory = "";
-
             ClearMessageLog();
             StartLoadingAnimation();
-            await SaveFiles(FileDirectory);
+            await SaveFiles(ImageDirectory);
             StopLoadingAnimation();
         }
 
@@ -696,10 +698,18 @@ namespace PhotoApp
         {
             Dispatcher UIDispatcher = Dispatcher.CurrentDispatcher;
 
+            if (FileDirectory.Trim() != "")                     // Are we saving inside a directory?
+            {
+                if (!Directory.Exists(FileDirectory))           // If that directory doesn't exist
+                {
+                    Directory.CreateDirectory(FileDirectory);   // Create that directory
+                }
+            }
+
             return Task.Factory.StartNew(() =>
             {
                 int count = 0;
-                string FilePath = "";
+                string FilePath;
 
                 foreach (RedditImage image in Thumbnails)
                 {
@@ -1001,7 +1011,7 @@ namespace PhotoApp
         }
 
 
-        #region Functions for Testing
+        #region Functions for Demonstration
         // Function:    DemoButton_Click
         // Purpose:     Adds demonstration Subreddits
         void DemoButton_Click(object sender, EventArgs e)

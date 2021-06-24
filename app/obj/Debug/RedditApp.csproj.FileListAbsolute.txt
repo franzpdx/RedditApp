@@ -16,3 +16,20 @@ C:\Users\super\Documents\Github New\RedditApp\app\obj\Debug\RedditApp.csproj.Cor
 C:\Users\super\Documents\Github New\RedditApp\app\obj\Debug\RedditApp.csproj.CopyComplete
 C:\Users\super\Documents\Github New\RedditApp\app\obj\Debug\PhotoApp.exe
 C:\Users\super\Documents\Github New\RedditApp\app\obj\Debug\PhotoApp.pdb
+C:\Users\super\Documents\GitHub\RedditApp\app\bin\Debug\PhotoApp.exe.config
+C:\Users\super\Documents\GitHub\RedditApp\app\bin\Debug\PhotoApp.exe
+C:\Users\super\Documents\GitHub\RedditApp\app\bin\Debug\PhotoApp.pdb
+C:\Users\super\Documents\GitHub\RedditApp\app\bin\Debug\Newtonsoft.Json.dll
+C:\Users\super\Documents\GitHub\RedditApp\app\bin\Debug\Newtonsoft.Json.xml
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\MainWindow.g.cs
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\App.g.cs
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\PhotoApp_MarkupCompile.cache
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\PhotoApp_MarkupCompile.lref
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\MainWindow.baml
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\PhotoApp.g.resources
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\PhotoApp.Properties.Resources.resources
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\RedditApp.csproj.GenerateResource.cache
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\RedditApp.csproj.CoreCompileInputs.cache
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\RedditApp.csproj.CopyComplete
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\PhotoApp.exe
+C:\Users\super\Documents\GitHub\RedditApp\app\obj\Debug\PhotoApp.pdb

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PhotoApp.Properties
+namespace RedditApp.Properties
 {
 
 

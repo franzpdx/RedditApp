@@ -1,7 +1,7 @@
-﻿<Application x:Class="PhotoApp.App"
+﻿<Application x:Class="RedditApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:PhotoApp"
+             xmlns:local="clr-namespace:RedditApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          
