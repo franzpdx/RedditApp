@@ -1,4 +1,4 @@
-# Reddit Image Crawler
+# Reddit Image Scraper
 This program retrieves recent images from Reddit. The user can save the collection of images and can specify which subreddits the program will search.
   
 ## Function
