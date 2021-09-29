@@ -18,6 +18,10 @@ Like many users, I enjoy having a folder of desktop wallpapers that are randomly
 
 - **Example**: Here's an example of the program running:
 
+  ![Program Example Animated Gif](/doc/ActiveScraper.gif)
+  
+- A still screenshot, followed by images seen on the live Reddit website
+
   ![Program Example Image](/doc/redditapppic.png)
   
 - Browsing the live Reddit website, we can see many of these images when we view a listed subreddit:
